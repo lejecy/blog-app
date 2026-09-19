@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 font-sans leading-relaxed">
     <!-- Navigation -->
@@ -12,12 +13,18 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <span class="text-2xl font-bold text-blue-700">BlogApp</span>
+                    <a href="{{ route('welcome') }}" class="text-2xl font-bold text-blue-700">BlogApp</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="text-gray-600 hover:text-blue-700">Home</a>
-                    <a href="#" class="text-gray-600 hover:text-blue-700">Features</a>
-
+                    <a href="{{ route('posts.index') }}" class="text-gray-600 hover:text-blue-700">Blog</a>
+                    <a href="#features" class="text-gray-600 hover:text-blue-700">Features</a>
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-blue-700">Dashboard</a>
+                        <a href="{{ route('posts.my') }}" class="bg-blue-700 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-800">My Posts</a>
+                    @else
+                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-700">Log in</a>
+                        <a href="{{ route('register') }}" class="bg-blue-700 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-800">Register</a>
+                    @endauth
                 </div>
             </div>
         </div>
@@ -30,19 +37,20 @@
                 <h1 class="text-5xl font-extrabold mb-6 animate-fade-in">Welcome to BlogApp</h1>
                 <p class="text-xl mb-12 text-blue-100 max-w-2xl mx-auto">Start writing and sharing your thoughts today. Join our community of passionate writers and storytellers.</p>
                 <div class="space-x-6">
-                    <a href="#login" class="bg-yellow-500 text-blue-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-400 transition duration-300 inline-flex items-center">
-                        <i class="fas fa-sign-in-alt mr-2"></i> Log In
-                    </a>
-                    <a href="#register" class="bg-transparent border-2 border-yellow-500 text-yellow-500 px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-500 hover:text-blue-900 transition duration-300 inline-flex items-center">
-                        <i class="fas fa-user-plus mr-2"></i> Register
-                    </a>
+                    @auth
+                        <a href="{{ route('posts.index') }}" class="bg-yellow-500 text-blue-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-400 transition duration-300 inline-flex items-center">Go to Blog</a>
+                        <a href="{{ route('dashboard') }}" class="bg-transparent border-2 border-yellow-500 text-yellow-500 px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-500 hover:text-blue-900 transition duration-300 inline-flex items-center">Dashboard</a>
+                    @else
+                        <a href="{{ route('login') }}" class="bg-yellow-500 text-blue-900 px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-400 transition duration-300 inline-flex items-center">Log In</a>
+                        <a href="{{ route('register') }}" class="bg-transparent border-2 border-yellow-500 text-yellow-500 px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-500 hover:text-blue-900 transition duration-300 inline-flex items-center">Register</a>
+                    @endauth
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="py-20 px-8 bg-white">
+    <section id="features" class="py-20 px-8 bg-white">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-3xl font-bold text-center mb-16 text-gray-800">Why Choose BlogApp?</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -76,9 +84,11 @@
         <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-3xl font-bold mb-8 text-gray-800">Ready to Start Your Writing Journey?</h2>
             <p class="text-xl text-gray-600 mb-12">Join thousands of writers who have already found their voice with BlogApp.</p>
-            <a href="#register" class="bg-blue-700 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-800 transition duration-300 inline-flex items-center">
-                <i class="fas fa-rocket mr-2"></i> Get Started for Free
-            </a>
+            @auth
+                <a href="{{ route('posts.index') }}" class="bg-blue-700 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-800 transition duration-300 inline-flex items-center">Go to Blog</a>
+            @else
+                <a href="{{ route('register') }}" class="bg-blue-700 text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-800 transition duration-300 inline-flex items-center">Get Started for Free</a>
+            @endauth
         </div>
     </section>
 
@@ -93,9 +103,9 @@
                 <div>
                     <h4 class="text-lg font-semibold mb-4">Product</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
-
-                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="{{ route('posts.index') }}" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-white">Login</a></li>
                     </ul>
                 </div>
                 <div>

@@ -4,7 +4,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [PostController::class, 'index'])->name('home');
+Route::view('/', 'welcome')->name('welcome');
+Route::get('/home', [PostController::class, 'index'])->name('home');
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
 Route::get('/dashboard', function () {

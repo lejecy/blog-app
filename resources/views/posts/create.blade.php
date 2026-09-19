@@ -31,7 +31,7 @@
 
                     <div class="mb-6">
                         <label class="flex items-center">
-                            <input type="checkbox" name="is_published" value="1" checked class="rounded border-gray-300 text-blue-600">
+                            <input type="checkbox" name="is_published" value="1" {{ old('is_published', true) ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600">
                             <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">Publish immediately</span>
                         </label>
                     </div>

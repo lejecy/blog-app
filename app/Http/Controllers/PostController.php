@@ -43,8 +43,8 @@ class PostController extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = $request->user()->id;
-        $data['slug'] = Str::slug($data['title']) . '-' . Str::lower(Str::random(6));
-        $data['is_published'] = $request->boolean('is_published', true);
+        $data['slug'] = Str::slug($data['title']).'-'.Str::lower(Str::random(6));
+        $data['is_published'] = $request->boolean('is_published');
         $data['published_at'] = $data['is_published'] ? now() : null;
 
         $post = Post::create($data);
@@ -64,7 +64,8 @@ class PostController extends Controller
         $this->authorizeOwner($post);
 
         $data = $request->validated();
-        $data['is_published'] = $request->boolean('is_published', $post->is_published);
+        // checkbox unchecked => missing key => false (draft). Use has+boolean to avoid fallback to old value
+        $data['is_published'] = $request->has('is_published') ? $request->boolean('is_published') : false;
         $data['published_at'] = $data['is_published'] ? ($post->published_at ?? now()) : null;
 
         $post->update($data);

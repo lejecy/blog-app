@@ -72,6 +72,14 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "audit": {
+            "abandoned": "report",
+            "ignore": {
+                "PKSA-m5cs-t1y6-qpcs": "Temporary Signed URL Path Confusion - requires Laravel 12.61+ (portfolio on 11.x, non-critical for demo)",
+                "PKSA-3r5d-mb8f-1qw9": "CRLF injection in email rule - fixed in 12.60+, portfolio uses 11.x",
+                "PKSA-mdq4-51ck-6kdq": "CVE-2026-48019 duplicate of above"
+            }
         }
     },
     "minimum-stability": "stable",

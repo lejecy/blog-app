@@ -19,9 +19,9 @@ class PostFactory extends Factory
         return [
             'user_id' => User::factory(),
             'title' => $title,
-            'slug' => Str::slug($title) . '-' . Str::lower(Str::random(6)),
+            'slug' => Str::slug($title).'-'.Str::lower(Str::random(6)),
             'excerpt' => Str::limit($body, 150),
-            'body' => $body . "\n\n" . fake()->paragraphs(2, true),
+            'body' => $body."\n\n".fake()->paragraphs(2, true),
             'is_published' => true,
             'published_at' => now()->subDays(rand(0, 30)),
         ];
