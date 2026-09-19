@@ -1,66 +1,108 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BlogApp — Laravel Blog Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Учебный проект для портфолио на базе Laravel 11 + Breeze. Расширен поверх оригинального скелета из `devDoubleH/blog-app` (2 коммита, Laravel Breeze) — **основа не менялась, весь блог-функционал добавлен сверху**.
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=flat-square&logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=flat-square&logo=php)
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Что умеет
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Публичный блог** — список всех опубликованных постов с пагинацией (9 на странице), просмотр по `slug`
+- **CRUD для автора** — создание / редактирование / удаление только своих постов, черновики (`is_published = false`) не видны гостям
+- **Авторизация** — Laravel Breeze (Blade + Tailwind), регистрация/логин, профиль, dashboard
+- **Связи** — `User hasMany Post`, `Post belongsTo User`, scope `published()`
+- **Автогенерация** — `slug` из заголовка + рандом, `excerpt` из body, `published_at`
+- **Сиды и фабрики** — `PostFactory`, `PostSeeder` (12 опубликованных + 2 черновика)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🧱 Стек
 
-## Learning Laravel
+- **Backend:** PHP 8.2, Laravel 11.31, Eloquent, Blade
+- **Frontend:** Tailwind CSS 3, Vite 6, Alpine.js, Breeze Blade components
+- **Auth:** `laravel/breeze 2.3`, `inertiajs/inertia-laravel` (установлен но не используется — оставлен из оригинала)
+- **DB:** SQLite (dev) / MySQL/PostgreSQL (prod), миграции, сиды
+- **Tooling:** Pint, Pest, Sail, Pail
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 📁 Что добавлено поверх оригинала (основа не тронута)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```
+database/migrations/2025_02_05_000000_create_posts_table.php  # новая
+app/Models/Post.php                                            # новый
+app/Http/Controllers/PostController.php                        # новый
+app/Http/Requests/StorePostRequest.php / UpdatePostRequest.php # новые
+database/factories/PostFactory.php                             # новый
+database/seeders/PostSeeder.php                                # новый
+resources/views/posts/{index,show,create,edit,my}.blade.php    # новые
+resources/views/components/post-card.blade.php                 # новый
+routes/web.php                                                 # только добавлены маршруты, welcome не удален
+app/Models/User.php                                            # добавлен только метод posts()
+resources/views/layouts/navigation.blade.php                   # добавлены линки Blog / My Posts
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Оригинальные файлы `app/Http/Controllers/Auth/*`, `resources/views/welcome.blade.php`, `dashboard.blade.php` и т.д. — без изменений.
 
-## Laravel Sponsors
+## 🚀 Быстрый старт
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/lejecy/blog-app.git
+cd blog-app
 
-### Premium Partners
+cp .env.example .env
+composer install
+php artisan key:generate
+touch database/database.sqlite  # или настрой MySQL в .env
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+php artisan migrate --seed      # создаст users + 14 постов
+npm install && npm run build    # или npm run dev для разработки
 
-## Contributing
+php artisan serve
+# открыть http://127.0.0.1:8000  -> сразу список постов
+# /posts/create (требует логин), /my-posts, /dashboard, /profile
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Тестовый юзер:** `test@example.com` / `password` (из `DatabaseSeeder`)
 
-## Code of Conduct
+## 🔗 Маршруты
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Метод | URI | Имя | Доступ |
+|-------|-----|-----|--------|
+| GET | `/`, `/posts` | `home`, `posts.index` | public |
+| GET | `/posts/{slug}` | `posts.show` | public (черновики — только автор) |
+| GET | `/posts/create` | `posts.create` | auth |
+| POST | `/posts` | `posts.store` | auth |
+| GET | `/posts/{slug}/edit` | `posts.edit` | owner |
+| PUT | `/posts/{slug}` | `posts.update` | owner |
+| DELETE | `/posts/{slug}` | `posts.destroy` | owner |
+| GET | `/my-posts` | `posts.my` | auth |
+| GET | `/dashboard` | `dashboard` | auth |
 
-## Security Vulnerabilities
+## 🧪 Тесты
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan test
+# или
+./vendor/bin/pest
+```
 
-## License
+## 📸 Скриншоты (добавь свои)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+docs/screenshots/home.png      # список постов
+docs/screenshots/show.png      # страница поста
+docs/screenshots/create.png    # форма создания
+```
+
+## 📝 История проекта
+
+- **Оригинал:** `devDoubleH/blog-app` — 2 коммита (Feb 2025), голый Laravel Breeze — использовался на презентации.
+- **Форк:** `adham0720/blog-app` — 1 коммит (отстал).
+- **Портфолио-версия:** этот репозиторий (`lejecy/blog-app`) — поверх оригинала добавлен полноценный блог, README и сиды, без удаления истории.
+
+## 📄 Лицензия
+
+MIT — как у Laravel. Оригинальный скелет © Laravel LLC, блог-расширение © adham0720 / lejecy.
+
+## 👤 Автор
+
+Портфолио: `github.com/lejecy` — собраны учебные проекты (PharmaDistribute, veloce, blog-app).
+Исходный скелет: `github.com/devDoubleH/blog-app`.
