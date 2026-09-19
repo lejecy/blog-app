@@ -15,7 +15,7 @@
                     <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.*')">
+                    <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index') || request()->routeIs('posts.show') || request()->routeIs('posts.create') || request()->routeIs('posts.edit')">
                         {{ __('Blog') }}
                     </x-nav-link>
                     @auth
@@ -86,7 +86,7 @@
             <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                 {{ __('Home') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.*')">
+            <x-responsive-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index') || request()->routeIs('posts.show') || request()->routeIs('posts.create') || request()->routeIs('posts.edit')">
                 {{ __('Blog') }}
             </x-responsive-nav-link>
             @auth
